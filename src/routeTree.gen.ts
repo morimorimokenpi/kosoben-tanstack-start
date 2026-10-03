@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as CsrRouteImport } from './routes/csr'
+import { Route as SsrRouteImport } from './routes/ssr'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +24,49 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CsrRoute = CsrRouteImport.update({
+  id: '/csr',
+  path: '/csr',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SsrRoute = SsrRouteImport.update({
+  id: '/ssr',
+  path: '/ssr',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/csr': typeof CsrRoute
+  '/ssr': typeof SsrRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/csr': typeof CsrRoute
+  '/ssr': typeof SsrRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/csr': typeof CsrRoute
+  '/ssr': typeof SsrRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths: '/' | '/about' | '/csr' | '/ssr'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to: '/' | '/about' | '/csr' | '/ssr'
+  id: '__root__' | '/' | '/about' | '/csr' | '/ssr'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  CsrRoute: typeof CsrRoute
+  SsrRoute: typeof SsrRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +85,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/csr': {
+      id: '/csr'
+      path: '/csr'
+      fullPath: '/csr'
+      preLoaderRoute: typeof CsrRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ssr': {
+      id: '/ssr'
+      path: '/ssr'
+      fullPath: '/ssr'
+      preLoaderRoute: typeof SsrRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  CsrRoute: CsrRoute,
+  SsrRoute: SsrRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
